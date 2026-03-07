@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { Platform } from "react-native";
-import * as SecureStore from "expo-secure-store";
+import { getAccessToken, logout } from "../api/auth";
 
 const AuthContext = createContext<any>(null);
 
@@ -10,13 +9,7 @@ export const AuthProvider = ({children}:any) => {
 
     useEffect(()=> {
         const loadToken = async () => {
-            let storedToken;
-            if (Platform.OS === "web") {
-                storedToken = localStorage.getItem("access");
-            }
-            else{
-                storedToken = await SecureStore.getItemAsync("access");
-            }
+            const storedToken = await getAccessToken();
             setToken(storedToken);
             setLoading(false);
         };
@@ -24,7 +17,7 @@ export const AuthProvider = ({children}:any) => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{ token, setToken, loading }}>
+        <AuthContext.Provider value={{ token, setToken, loading, logout }}>
           {children}
         </AuthContext.Provider>
       );

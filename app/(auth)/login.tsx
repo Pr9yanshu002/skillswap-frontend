@@ -13,15 +13,14 @@ export default function Login() {
   const {setToken} = useAuth();
   const handleLogin = async () => {
     try{
-      const res = await api.post("auth/login/", {
+      console.log("Sending request...");
+      const res = await api.post("/auth/login/", {
         email,password
       })
-      console.log("saving tokens");
-      await saveTokens(res.data.refresh,res.data.access)
+      await saveTokens(res.data.access,res.data.refresh)
       setToken(res.data.access);
       Alert.alert("Success", "Login successful");
-      router.replace({ pathname: "/" });
-      console.log("tokens saved");
+      router.replace({ pathname: "/(tabs)" });
     }
     catch(error: any){
       console.log(error.response?.data);
