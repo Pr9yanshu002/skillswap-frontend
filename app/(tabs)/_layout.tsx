@@ -52,7 +52,7 @@ function TabBarBtn({
       duration: 250,
       useNativeDriver: false,
     }).start();
-  }, [isActive]);
+  }, [glowAnim, isActive]);
 
   const handlePressIn = () => {
     Animated.spring(scaleAnim, {

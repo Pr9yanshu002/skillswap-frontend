@@ -1,8 +1,7 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet , Alert } from "react-native";
 import { useState } from "react";
 import { router } from "expo-router";
 import { api } from "@/src/api/api";
-import { Alert } from "react-native";
 
 export default function Signup() {
   const [email, setEmail] = useState("");

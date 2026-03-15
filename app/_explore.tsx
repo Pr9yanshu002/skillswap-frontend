@@ -30,7 +30,7 @@ const LEVEL_COLORS: Record<string, { color: string; bg: string }> = {
 
 const AVATAR_COLORS = ["#7C6FCD", "#34D399", "#F59E0B", "#F87171", "#60A5FA", "#C084FC"];
 
-function MentorCard({ item, index }: { item: any; index: number }) {
+function MentorCard({ item, index, onPress }: { item: any; index: number; onPress: () => void }) {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(24)).current;
 
@@ -39,6 +39,7 @@ function MentorCard({ item, index }: { item: any; index: number }) {
       Animated.timing(fadeAnim, { toValue: 1, duration: 350, delay: index * 60, useNativeDriver: true }),
       Animated.timing(slideAnim, { toValue: 0, duration: 350, delay: index * 60, useNativeDriver: true }),
     ]).start();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const level = item.level?.toLowerCase() ?? "beginner";
@@ -47,23 +48,25 @@ function MentorCard({ item, index }: { item: any; index: number }) {
   const avatarColor = AVATAR_COLORS[item.username?.charCodeAt(0) % AVATAR_COLORS.length] ?? AVATAR_COLORS[0];
 
   return (
-    <Animated.View style={[styles.card, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
-      <View style={[styles.avatar, { backgroundColor: avatarColor + "22", borderColor: avatarColor + "55" }]}>
-        <Text style={[styles.avatarText, { color: avatarColor }]}>{initials}</Text>
-      </View>
-      <View style={styles.cardInfo}>
-        <Text style={styles.cardName}>{item.username}</Text>
-        <View style={styles.cardBadges}>
-          <Text style={styles.cardSkill}>{item.skill_name}</Text>
-          <View style={[styles.levelBadge, { backgroundColor: levelStyle.bg }]}>
-            <Text style={[styles.levelBadgeText, { color: levelStyle.color }]}>{item.level}</Text>
+    <TouchableOpacity onPress={onPress}>
+      <Animated.View style={[styles.card, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
+        <View style={[styles.avatar, { backgroundColor: avatarColor + "22", borderColor: avatarColor + "55" }]}>
+          <Text style={[styles.avatarText, { color: avatarColor }]}>{initials}</Text>
+        </View>
+        <View style={styles.cardInfo}>
+          <Text style={styles.cardName}>{item.username}</Text>
+          <View style={styles.cardBadges}>
+            <Text style={styles.cardSkill}>{item.skill_name}</Text>
+            <View style={[styles.levelBadge, { backgroundColor: levelStyle.bg }]}>
+              <Text style={[styles.levelBadgeText, { color: levelStyle.color }]}>{item.level}</Text>
+            </View>
           </View>
         </View>
-      </View>
-      <TouchableOpacity style={styles.connectBtn} activeOpacity={0.8}>
-        <Ionicons name="person-add-outline" size={16} color={COLORS.accentLight} />
-      </TouchableOpacity>
-    </Animated.View>
+        <TouchableOpacity style={styles.connectBtn} activeOpacity={0.8}>
+          <Ionicons name="person-add-outline" size={16} color={COLORS.accentLight} />
+        </TouchableOpacity>
+      </Animated.View>
+    </TouchableOpacity>
   );
 }
 
@@ -98,6 +101,7 @@ export default function Explore() {
       Animated.timing(headerFade, { toValue: 1, duration: 500, useNativeDriver: true }),
       Animated.timing(headerSlide, { toValue: 0, duration: 500, useNativeDriver: true }),
     ]).start();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -223,7 +227,7 @@ export default function Explore() {
             </Text>
           ) : null}
           ListEmptyComponent={<EmptyState hasQuery={!!selectedSkill} />}
-          renderItem={({ item, index }) => <MentorCard item={item} index={index} />}
+          renderItem={({ item, index }) => <MentorCard item={item} index={index} onPress={() => router.push(`/mentor/${item.id}`)} />}
         />
       )}
     </View>

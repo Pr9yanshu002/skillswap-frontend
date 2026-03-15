@@ -1,7 +1,6 @@
 import {
   ActivityIndicator,
   Animated,
-  Dimensions,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -12,8 +11,6 @@ import {
 import { router } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import { api } from "@/src/api/api";
-
-const { width } = Dimensions.get("window");
 
 const COLORS = {
   bg: "#0F0E17",
@@ -58,6 +55,7 @@ function SkillCard({ skill, index }: { skill: any; index: number }) {
         useNativeDriver: true,
       }),
     ]).start();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const level = skill.level?.toLowerCase() ?? "beginner";
@@ -112,6 +110,7 @@ export default function Home() {
 
   useEffect(() => {
     fetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const animateIn = () => {

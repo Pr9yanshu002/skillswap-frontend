@@ -1,6 +1,5 @@
 import {
   Animated,
-  Dimensions,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -13,8 +12,6 @@ import { useAuth } from "@/src/context/auth_context";
 import { useEffect, useRef, useState } from "react";
 import { api } from "@/src/api/api";
 import { router } from "expo-router";
-
-const { width } = Dimensions.get("window");
 
 const COLORS = {
   bg: "#0F0E17",
@@ -60,6 +57,7 @@ function SkillRow({ item, index, accentColor, accentBg, accentBorder }: {
       Animated.timing(fadeAnim, { toValue: 1, duration: 350, delay: index * 70, useNativeDriver: true }),
       Animated.timing(slideAnim, { toValue: 0, duration: 350, delay: index * 70, useNativeDriver: true }),
     ]).start();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const level = item.level?.toLowerCase() ?? "beginner";
@@ -127,6 +125,7 @@ export default function Profile() {
 
   useEffect(() => {
     fetchProfile();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const animateIn = () => {
