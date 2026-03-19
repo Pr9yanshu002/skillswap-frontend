@@ -28,4 +28,4 @@ jobs:
         run: npx eslint .
 
       - name: Expo config validation
-        run: npx expo doctor
+        run: npx expo-doctor
