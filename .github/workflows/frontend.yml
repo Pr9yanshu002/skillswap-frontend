@@ -6,26 +6,40 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: 📥 Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup Node
+      - name: 🟢 Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Install dependencies
+      - name: 📦 Install dependencies
         run: npm install
 
-      - name: TypeScript check
+      - name: 🔍 TypeScript check
         run: npx tsc --noEmit
 
-      - name: Lint check
+      - name: 🧹 Lint check
         run: npx eslint .
 
-      - name: Expo config validation
+      - name: 🩺 Expo config validation
         run: npx expo-doctor
+
+      # 👉 NEW STARTS HERE
+
+      - name: ⚙️ Install Expo + EAS CLI
+        run: npm install -g expo-cli eas-cli
+
+      - name: 🔐 Authenticate with Expo
+        run: eas whoami
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      - name: 🚀 Trigger EAS Build (Android)
+        run: eas build --platform android --profile production --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
